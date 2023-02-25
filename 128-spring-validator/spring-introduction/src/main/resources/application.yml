@@ -1,0 +1,8 @@
+app:
+  aspect:
+    prefix: שלום
+logging:
+  level:
+    aop-telran: debug
+    root: error
+    telran: info
