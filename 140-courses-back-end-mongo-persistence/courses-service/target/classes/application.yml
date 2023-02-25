@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:docker}
+  data:
+    mongodb:
+      database: college
+        
+      port: 27017
+      
+          
+logging:
+  level:
+    telran:  ${LOGGING_LEVEL:trace}
+app:
+  jwt:
+    secret: ${JWT_SECRET}
