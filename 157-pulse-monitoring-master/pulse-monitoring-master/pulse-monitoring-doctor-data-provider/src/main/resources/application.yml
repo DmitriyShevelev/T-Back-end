@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: pulse-monitoring-doctor-data-provider
+  config:
+    import: configserver:http://localhost:8888
