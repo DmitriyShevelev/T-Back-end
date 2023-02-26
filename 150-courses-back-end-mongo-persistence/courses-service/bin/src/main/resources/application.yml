@@ -1,9 +1,0 @@
-logging:
-  level:
-    telran:  trace
-app:
-  jwt:
-    secret: ${JWT_SECRET}
-   
-   
-   

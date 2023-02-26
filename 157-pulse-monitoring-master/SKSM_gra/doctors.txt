@@ -1,3 +1,0 @@
-yosef@gmail.com,yosef
-david@gmail.com,david
-sergey@gmail.com,sergey
