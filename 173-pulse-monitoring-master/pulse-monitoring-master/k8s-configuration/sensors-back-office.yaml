@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back-office-sensors-deployment
+spec:
+  selector:
+    matchLabels:
+      app: back-office-sensors
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: back-office-sensors
+    spec:
+      containers:
+      - name: back-office-sensors-container
+        image: yuragranovsky/pulse-monitoring_back-office-sensors
+        resources:
+          requests:
+            memory: 50Mi
+            cpu: 50m
+          limits:
+            memory: 300Mi
+            cpu: 100m
+        ports:
+          - containerPort: 8082
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            valueFrom:
+              configMapKeyRef:
+                name: pulse-monitoring-config
+                key: springProfilesActive
+          - name: MONGO_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pulse-monitoring-secret
+                key: mongoPassword
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  back-office-sensors
+spec:
+  selector:
+    app:  back-office-sensors
+  type:  ClusterIP
+  ports:
+  - port:  8082
+    targetPort:  8082
+                          

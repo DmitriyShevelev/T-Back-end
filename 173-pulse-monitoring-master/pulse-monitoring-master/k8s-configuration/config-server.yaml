@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-server-deployment
+  
+spec:
+  selector:
+    matchLabels:
+      app: config-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: config-server
+    spec:
+      containers:
+      - name: config-server
+        image: yuragranovsky/pulse-monitoring_config-server
+        resources:
+          requests:
+            memory: 50Mi
+            cpu: 50m
+          limits:
+            memory: 300Mi
+            cpu: 300m
+        ports:
+          - containerPort: 8888
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  config-server
+spec:
+  selector:
+    app:  config-server
+  type:  ClusterIP
+  ports:
+  - name:  name-of-the-port
+    port:  8888
+    targetPort:  8888          
+          

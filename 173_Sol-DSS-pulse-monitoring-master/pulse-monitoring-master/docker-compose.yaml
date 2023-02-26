@@ -1,0 +1,95 @@
+services:
+  config-server:
+    build:
+      pulse-monitoring-config-server
+    mem_limit: 200m
+    mem_reservation: 50m
+  redis:
+    image: redis
+      
+  pulse-analyser:
+    build:
+      pulse-analyser
+    mem_limit: 200m
+    mem_reservation: 50m
+    environment:
+      - KAFKA_PASSWORD=**********
+      - SPRING_PROFILES_ACTIVE=docker
+      - REDIS_HOST=redis
+  
+  average-populator:
+    build:
+      pulse-monitoring-average-populator
+    mem_limit: 200m
+    mem_reservation: 50m
+    environment:
+      - KAFKA_PASSWORD=******
+      - SPRING_PROFILES_ACTIVE=docker
+      - MONGO_PASSWORD=*******
+  average-reducer:
+    build:
+      pulse-monitoring-avg-reducer
+    mem_limit: 200m
+    mem_reservation: 50m
+    environment:
+      - KAFKA_PASSWORD=******
+      - SPRING_PROFILES_ACTIVE=docker
+      - REDIS_HOST=redis
+  doctor-patient-data-provider: 
+    build:
+      pulse-monitoring-doctor-data-provider
+    mem_limit: 200m
+    mem_reservation: 50m
+    environment:
+      - POSTGRES_PASSWORD=********
+      - SPRING_PROFILES_ACTIVE=docker
+  jumps-notifier:
+    build:
+      pulse-monitoring-jumps-notifier
+    mem_limit: 200m
+    mem_reservation: 50m
+    environment:
+      - KAFKA_PASSWORD=********
+      - SPRING_PROFILES_ACTIVE=docker
+      - DATA_PROVIDER_URL=http://doctor-patient-data-provider:8080
+      - MAIL_PASSWORD=********
+  pulse-monitoring-gateway:
+    build:
+      pulse-monitoring-gateway
+    ports:
+      - "9090:9090"
+    mem_limit: 200m
+    mem_reservation: 50m
+    environment:
+      - VISITS_HOST=back-office-visits
+      - SENSORS_HOST=back-office-sensors
+  jumps-populator:
+    build:
+      pulse-monitoring-jumps-populator
+    mem_limit: 200m
+    mem_reservation: 50m
+    environment:
+      - KAFKA_PASSWORD=*******
+      - SPRING_PROFILES_ACTIVE=docker
+      - MONGO_PASSWORD=*****
+  back-office-visits:
+    build:
+      pulse-monitoring-visits-back-office
+    mem_limit: 200m
+    mem_reservation: 50m
+    environment:
+      - POSTGRES_PASSWORD=*********
+      - SPRING_PROFILES_ACTIVE=docker
+  back-office-sensors:
+    build:
+      pulse-monitoring-sensor-values-back-office
+    mem_limit: 200m
+    mem_reservation: 50m
+    environment:
+      - MONGO_PASSWORD=******
+      - SPRING_PROFILES_ACTIVE=docker
+  
+      
+      
+      
+   

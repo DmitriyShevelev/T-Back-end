@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      database: college
+      host: localhost
+      port: 27017
+        
+          
+logging:
+  level:
+    telran:  trace
+app:
+  jwt:
+    secret: ${JWT_SECRET}

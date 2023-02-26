@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pulse-monitoring-gateway
+  template:
+    metadata:
+      labels:
+        app: pulse-monitoring-gateway
+    spec:
+      containers:
+      - name: gateway-container
+        image: yuragranovsky/pulse-monitoring_pulse-monitoring-gateway
+        ports:
+          - containerPort: 9090
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            valueFrom:
+              configMapKeyRef:
+                name: pulse-monitoring-config
+                key: springProfilesActive
+          - name: VISITS_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: pulse-monitoring-config
+                key: visitsHost
+          - name: SENSORS_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: pulse-monitoring-config
+                key: sensorsHost
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  gateway
+spec:
+  selector:
+    app:  pulse-monitoring-gateway
+  type:  LoadBalancer
+  ports:
+  - nodePort: 30000
+    port:  9090
+    targetPort:  9090                               

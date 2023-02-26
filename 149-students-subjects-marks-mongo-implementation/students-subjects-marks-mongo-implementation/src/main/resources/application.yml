@@ -1,0 +1,6 @@
+spring:
+   data:
+      mongodb:
+         uri: mongodb+srv://root:${MONGO_PASSWORD}@cluster0.w60x0.mongodb.net/college?retryWrites=true&w=majority
+ 
+     
